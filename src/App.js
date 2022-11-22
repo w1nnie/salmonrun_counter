@@ -15,18 +15,27 @@ class AppContainer extends React.Component {
   constructor(props) {
     super(props);
     this.handlescoreChange = this.handlescoreChange.bind(this);
+    this.addScore = this.addScore.bind(this);
     this.state = {score: 40};
+    this.scoreArray = [];
   }
 
   handlescoreChange(value) {
     this.setState({score: value});
+    this.addScore(value);
+  }
+
+  addScore(value) {
+    this.scoreArray.unshift(value);
+    if(this.scoreArray.length > 10) {
+      this.scoreArray.pop();
+    }
   }
 
   render() {
-    console.log(this.state.score);
     return (
       <div className="AppContainer">
-        <Display score={this.state.score}/>
+        <Display scoreArray={this.scoreArray}/>
         <Buttons
           score={this.state.score}
           onscoreChange={this.handlescoreChange}/>
@@ -41,12 +50,20 @@ class Display extends React.Component {
   }
 
   render() {
+    console.log(this.props.scoreArray)
+    const listitems = this.props.scoreArray.map((number) =>
+      // <li key={number.toString()}>{number}</li>
+      <ScoreImage key={number.toString()} value={number} />
+    );
     return (
-      <div className="display">
-        {this.props.score}
-      </div>
+      <div className="display">{listitems}</div>
     );
   }
+}
+
+function ScoreImage(props) {
+  // return <div className="scoreImage">{number}</div>;
+  return <div className="scoreImage">{props.value}</div>;
 }
 
 class Buttons extends React.Component {
