@@ -14,14 +14,22 @@ function App() {
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eval: 40};
+    this.handlescoreChange = this.handlescoreChange.bind(this);
+    this.state = {score: 40};
+  }
+
+  handlescoreChange(value) {
+    this.setState({score: value});
   }
 
   render() {
+    console.log(this.state.score);
     return (
       <div className="AppContainer">
-        <Display eval = {this.state.eval}/>
-        <Buttons eval = {this.state.eval}/>
+        <Display score={this.state.score}/>
+        <Buttons
+          score={this.state.score}
+          onscoreChange={this.handlescoreChange}/>
       </div>
     );
   }
@@ -35,32 +43,29 @@ class Display extends React.Component {
   render() {
     return (
       <div className="display">
-        {this.props.eval}
+        {this.props.score}
       </div>
     );
   }
 }
 
 class Buttons extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {eval: 40};
-  }
 
-  handleClick(value) {
-    this.setState({eval: this.state.eval+value});
-    console.log(this.state);
+
+  handleClick(score, diff) {
+    this.props.onscoreChange(score+diff);
   }
   render() {
+    const score = this.props.score;
     return (
       <div className="buttons">
         <div className="grid-wrapper">
-          <button className="box" onClick={() => {this.handleClick(20)}}>+20</button>
-          <button className="box" onClick={() => {this.handleClick(20)}}>+20 ex-O</button>
-          <button className="box" onClick={() => {this.handleClick(20)}}>+20 ex-X</button>
-          <button className="box" onClick={() => {this.handleClick(-20)}}>-20</button>
-          <button className="box" onClick={() => {this.handleClick(-10)}}>-10</button>
-          <button className="box" onClick={() => {this.handleClick(0)}}>±0 </button>
+          <button className="box" onClick={() => this.handleClick(score, 20)}>+20</button>
+          <button className="box" onClick={() => this.handleClick(score, 20)}>+20 ex-O</button>
+          <button className="box" onClick={() => this.handleClick(score, 20)}>+20 ex-X</button>
+          <button className="box" onClick={() => this.handleClick(score, -20)}>-20</button>
+          <button className="box" onClick={() => this.handleClick(score, -10)}>-10</button>
+          <button className="box" onClick={() => this.handleClick(score, 0)}>±0 </button>
         </div>
       </div>
     );
