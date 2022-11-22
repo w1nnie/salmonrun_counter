@@ -1,7 +1,11 @@
 // import logo from './logo.svg';
 import React from 'react';
 import './App.css';
-
+import bg_clear from "./salmonrun_assets/clear/bg.png";
+import bg_failure from "./salmonrun_assets/failure/bg.png";
+import c0 from "./salmonrun_assets/clear/0.png";
+import up from "./salmonrun_assets/clear/up.png";
+import boss_clear from "./salmonrun_assets/clear/boss_clear.png";
 
 function App() {
   return (
@@ -18,6 +22,8 @@ class AppContainer extends React.Component {
     this.addScore = this.addScore.bind(this);
     this.state = {score: 40};
     this.scoreArray = [];
+    this.hasEncounteredBoss = true;
+    this.hasBeatenBoss = true;
   }
 
   handlescoreChange(value) {
@@ -52,8 +58,7 @@ class Display extends React.Component {
   render() {
     console.log(this.props.scoreArray)
     const listitems = this.props.scoreArray.map((number) =>
-      // <li key={number.toString()}>{number}</li>
-      <ScoreImage key={number.toString()} value={number} />
+      <ScoreImage value={number} />
     );
     return (
       <div className="display">{listitems}</div>
@@ -63,7 +68,15 @@ class Display extends React.Component {
 
 function ScoreImage(props) {
   // return <div className="scoreImage">{number}</div>;
-  return <div className="scoreImage">{props.value}</div>;
+  return (
+    <div className="scoreImage" style={{backgroundImage: `url(${bg_clear})`}}>
+      <img className="scoreValue" src={c0}/>
+      <img className="scoreValue" src={c0}/>
+      <img className="scoreValue" src={c0}/>
+      <img className="arrow" src={up}/>
+      <img className="okashira" src={boss_clear}/>
+    </div>
+  );
 }
 
 class Buttons extends React.Component {

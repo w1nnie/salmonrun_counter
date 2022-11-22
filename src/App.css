@@ -12,7 +12,7 @@
 
 .display {
   width: 50%;
-  background-color: coral;
+  /* background-color: coral; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,12 +22,27 @@
 .scoreImage {
   height: 60px;
   width: 200px;
-  background-color: #e4e477;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: #e4e477; */
+}
+
+.scoreValue {
+  height: 40px;
+}
+
+.arrow {
+  height: 40px;
+}
+
+.okashira {
+  height: 40px;
 }
 
 .buttons {
   width: 50%;
-  background-color: #61dafb;
+  /* background-color: #61dafb; */
   
 }
 
