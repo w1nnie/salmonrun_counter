@@ -45,6 +45,7 @@ class AppContainer extends React.Component {
   constructor(props) {
     super(props);
     this.handlescoreChange = this.handlescoreChange.bind(this);
+    this.handleFix = this.handleFix.bind(this);
     this.state = {score: 40, isWin:true, hasEncounteredBoss: true, hasBeatenBoss: true, arrow: "up"};
     this.recordArray = [];
   }
@@ -54,22 +55,25 @@ class AppContainer extends React.Component {
     this.addScore({score: value, isWin: win, hasEncounteredBoss: encounter, hasBeatenBoss: beat, arrow: arrow});
   }
 
+  handleFix(array){
+    array.shift();
+    this.setState(array[0]);
+  }
+
   addScore(state) {
     this.recordArray.unshift(state);
-    // if(this.scoreArray.length > 10) {
-      // this.scoreArray.pop();
-    // }
   }
 
   render() {
-    // console.log(this.recordArray);
     return (
       <div className="AppContainer">
         <Display 
           recordArray={this.recordArray}/>
         <Buttons
           score={this.state.score}
-          onscoreChange={this.handlescoreChange}/>
+          onscoreChange={this.handlescoreChange}
+          onFix={this.handleFix}
+          recordArray={this.recordArray}/>
       </div>
     );
   }
@@ -124,7 +128,7 @@ function ScoreImage(props) {
   return (
     <div className="scoreImage" style={{backgroundImage: `url(${bg})`}}>
       <img className="scoreValue" src={third} style={{display: `${thirdValue === 0 ? "none" : "block"}`}}/>
-      <img className="scoreValue" src={second}/>
+      <img className="scoreValue" src={second} style={{display: `${(thirdValue === 0 && secondValue === 0) ? "none" : "block"}`}}/>
       <img className="scoreValue" src={first}/>
       <img className="arrow" src={arrowState}/>
       <img className="okashira" src={bossSrc}/>
@@ -134,9 +138,21 @@ function ScoreImage(props) {
 
 class Buttons extends React.Component {
   handleClick(score, diff, isWin, hasEncounteredBoss, hasBeatenBoss, arrow) {
-    let newScore = score+diff < 1000 ? score+diff : 999;
+    let newScore
+    if (score + diff > 999){
+      newScore = 999;
+    } else if (score + diff < 0) {
+      newScore = 0;
+    } else {
+      newScore = score + diff
+    }
     this.props.onscoreChange(newScore, isWin, hasEncounteredBoss, hasBeatenBoss, arrow);
   }
+
+  handleFixClick() {
+    this.props.onFix(this.props.recordArray);
+  }
+
   render() {
     const score = this.props.score;
     return (
@@ -148,6 +164,7 @@ class Buttons extends React.Component {
           <button className="box" onClick={() => this.handleClick(score, -20, false, false, false, "down")}>-20</button>
           <button className="box" onClick={() => this.handleClick(score, -10, false, false, false, "down")}>-10</button>
           <button className="box" onClick={() => this.handleClick(score, 0, false, false, false, "keep")}>±0 </button>
+          <button className="box" onClick={() => this.handleFixClick()}>修正 </button>
         </div>
       </div>
     );
