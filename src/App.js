@@ -46,7 +46,7 @@ class AppContainer extends React.Component {
     super(props);
     this.handlescoreChange = this.handlescoreChange.bind(this);
     this.handleFix = this.handleFix.bind(this);
-    this.state = {score: 40, isWin:true, hasEncounteredBoss: true, hasBeatenBoss: true, arrow: "up"};
+    this.state = {score: 400, isWin:true, hasEncounteredBoss: true, hasBeatenBoss: true, arrow: "up"};
     this.recordArray = [];
   }
 
@@ -88,7 +88,7 @@ function Display(props) {
   let drawListitems = listitems;
 
   return (
-    <div className="display">{drawListitems.slice(0,10)}</div>
+    <div className="display">{drawListitems.slice(0,60)}</div>
   );
 }
 
